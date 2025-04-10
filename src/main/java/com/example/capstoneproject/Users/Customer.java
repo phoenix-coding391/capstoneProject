@@ -8,7 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Customer extends User {
+public class Customer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private String name;
+
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false) // Links to User table
+    private User user;
+
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Policy> policies = new ArrayList<>();
 
@@ -17,11 +30,46 @@ public class Customer extends User {
 
     public Customer() {}
 
-    public Customer(int id, String name, String email) {
-        super(id, name, email);
+    public Customer(int id, String name, String email, User user) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.user = user;
     }
 
     // Getters and setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public List<Policy> getPolicies() {
         return policies;
     }
@@ -38,22 +86,10 @@ public class Customer extends User {
         this.quotes = quotes;
     }
 
-    public Quote requestHomeQuote(Quote quote) {
-        quotes.add(quote);
-        return quote;
-    }
-
-    public void makePayment(Quote quote) {
-        if (!quotes.contains(quote)) {
-            throw new IllegalArgumentException("Quote does not exist for this customer.");
-        }
-        quote.markAsPaid();
-        quotes.remove(quote);
-        System.out.println("Payment received for Quote: " + quote.getId());
-    }
-
     @Override
     public String toString() {
-        return super.toString() + " (Customer)";
+        return "Customer [ID=" + id + ", Name=" + name + ", Email=" + email + ", User=" + user + "]";
     }
 }
+
+

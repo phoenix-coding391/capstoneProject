@@ -27,14 +27,14 @@ public class UserController {
 
     @PostMapping
     public User createUser(@RequestBody User user) {
+        user.setRole(user.getRole().toLowerCase()); // Ensure role is stored consistently
         return userRepository.save(user);
     }
 
     @PutMapping(ID)
     public User updateUser(@PathVariable int id, @RequestBody User updatedUser) {
         User existingUser = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + id));
-        existingUser.setName(updatedUser.getName());
-        existingUser.setEmail(updatedUser.getEmail());
+        existingUser.setRole(updatedUser.getRole().toLowerCase()); // Update role field
         return userRepository.save(existingUser);
     }
 

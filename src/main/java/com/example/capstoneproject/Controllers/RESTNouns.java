@@ -20,3 +20,4 @@ public class RESTNouns {
     public static final String USERS = "/user";
     public static final String VEHICLES = "/vehicle";
 }
+

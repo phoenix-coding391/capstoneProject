@@ -35,7 +35,7 @@ public class AdminController {
         Admin existingAdmin = adminRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Admin not found with ID: " + id));
         existingAdmin.setName(updatedAdmin.getName());
         existingAdmin.setEmail(updatedAdmin.getEmail());
-        existingAdmin.setRole(updatedAdmin.getRole());
+//        existingAdmin.setRole(updatedAdmin.getRole());
         return adminRepository.save(existingAdmin);
     }
 

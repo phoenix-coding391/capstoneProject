@@ -42,7 +42,6 @@ public class Policy {
         calculateTotalPremium();
     }
 
-    // Calculate total premium with rounding to the nearest whole number
     private void calculateTotalPremium() {
         // Rounds the result to the nearest whole number; result is cast back to double.
         this.totalPremium = (double) Math.round(basePremium * (1 + taxRate));

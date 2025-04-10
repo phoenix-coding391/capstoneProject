@@ -35,7 +35,7 @@ public class AgentController {
         Agent existingAgent = agentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Agent not found with ID: " + id));
         existingAgent.setName(updatedAgent.getName());
         existingAgent.setEmail(updatedAgent.getEmail());
-        existingAgent.setRole(updatedAgent.getRole());
+//        existingAgent.setRole(updatedAgent.getRole());
         return agentRepository.save(existingAgent);
     }
 

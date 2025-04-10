@@ -11,10 +11,10 @@ public class Home {
     private int yearBuilt;
     private double homeValue;
 
-    private String typeOfDwelling; // e.g., "standalone", "bungalow", etc.
-    private String heatingType; // e.g., "oil", "wood", "electric"
-    private String location; // e.g., "urban", "rural"
-    private double liabilityLimit; // e.g., $1M, $2M
+    private String typeOfDwelling;
+    private String heatingType;
+    private String location;
+    private double liabilityLimit;
 
     public Home() {}
 
