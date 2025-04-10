@@ -3,6 +3,7 @@ package com.example.capstoneproject.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.capstoneproject.DataAccess.AdminRepository;
+import com.example.capstoneproject.DataAccess.UserRepository;
 import com.example.capstoneproject.Users.Admin;
 
 import java.util.List;
@@ -14,6 +15,9 @@ import static com.example.capstoneproject.Controllers.RESTNouns.*;
 public class AdminController {
     @Autowired
     private AdminRepository adminRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
     public List<Admin> getAllAdmins() {
@@ -27,7 +31,7 @@ public class AdminController {
 
     @PostMapping
     public Admin createAdmin(@RequestBody Admin admin) {
-        return adminRepository.save(admin);
+        return adminRepository.saveWithUser(admin, userRepository);
     }
 
     @PutMapping(ID)
@@ -35,7 +39,6 @@ public class AdminController {
         Admin existingAdmin = adminRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Admin not found with ID: " + id));
         existingAdmin.setName(updatedAdmin.getName());
         existingAdmin.setEmail(updatedAdmin.getEmail());
-//        existingAdmin.setRole(updatedAdmin.getRole());
         return adminRepository.save(existingAdmin);
     }
 

@@ -3,6 +3,7 @@ package com.example.capstoneproject.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.capstoneproject.DataAccess.AgentRepository;
+import com.example.capstoneproject.DataAccess.UserRepository;
 import com.example.capstoneproject.Users.Agent;
 
 import java.util.List;
@@ -14,6 +15,9 @@ import static com.example.capstoneproject.Controllers.RESTNouns.*;
 public class AgentController {
     @Autowired
     private AgentRepository agentRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
     public List<Agent> getAllAgents() {
@@ -27,7 +31,7 @@ public class AgentController {
 
     @PostMapping
     public Agent createAgent(@RequestBody Agent agent) {
-        return agentRepository.save(agent);
+        return agentRepository.saveWithUser(agent, userRepository);
     }
 
     @PutMapping(ID)
@@ -35,7 +39,6 @@ public class AgentController {
         Agent existingAgent = agentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Agent not found with ID: " + id));
         existingAgent.setName(updatedAgent.getName());
         existingAgent.setEmail(updatedAgent.getEmail());
-//        existingAgent.setRole(updatedAgent.getRole());
         return agentRepository.save(existingAgent);
     }
 

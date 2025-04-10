@@ -3,6 +3,7 @@ package com.example.capstoneproject.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.capstoneproject.DataAccess.CustomerRepository;
+import com.example.capstoneproject.DataAccess.UserRepository;
 import com.example.capstoneproject.Users.Customer;
 
 import java.util.List;
@@ -14,6 +15,9 @@ import static com.example.capstoneproject.Controllers.RESTNouns.*;
 public class CustomerController {
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
     public List<Customer> getAllCustomers() {
@@ -27,7 +31,7 @@ public class CustomerController {
 
     @PostMapping
     public Customer createCustomer(@RequestBody Customer customer) {
-        return customerRepository.save(customer);
+        return customerRepository.saveWithUser(customer, userRepository);
     }
 
     @PutMapping(ID)
