@@ -28,7 +28,8 @@ public class TestHomeAndVehicle {
                 "Toyota",
                 "Camry",
                 2015,
-                "VIN1234567890"
+                "VIN1234567890",
+                10000
         );
 
         System.out.println("Vehicle created: " + vehicle);

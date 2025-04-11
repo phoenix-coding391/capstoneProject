@@ -7,21 +7,23 @@ public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String make;
     private String model;
     private int year;
     private String vin;
+    private double value;
 
     public Vehicle() {}
 
-    public Vehicle(String make, String model, int year, String vin) {
+    public Vehicle(String make, String model, int year, String vin, double value) {
         this.make = make;
         this.model = model;
         this.year = year;
         this.vin = vin;
+        this.value = value;
     }
 
-    // Getters and setters
     public int getId() {
         return id;
     }
@@ -62,8 +64,20 @@ public class Vehicle {
         this.vin = vin;
     }
 
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
     @Override
     public String toString() {
-        return "Make: " + make + ", Model: " + model + ", Year: " + year + ", VIN: " + vin;
+        return "Make: " + make +
+                ", Model: " + model +
+                ", Year: " + year +
+                ", VIN: " + vin +
+                ", Value: $" + value;
     }
 }
