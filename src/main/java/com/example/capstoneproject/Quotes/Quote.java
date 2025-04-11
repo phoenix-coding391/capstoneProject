@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import com.example.capstoneproject.Users.Customer;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Quote {
@@ -17,6 +19,7 @@ public abstract class Quote {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
+    @JsonIgnore
     private Customer customer;
 
     // Default constructor (for deserialization)
@@ -72,8 +75,9 @@ public abstract class Quote {
         isPaid = paid;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    @Transient
+    public Integer getCustomerId() {
+        return customer != null ? customer.getId() : null;
     }
 
     public void setCustomer(Customer customer) {

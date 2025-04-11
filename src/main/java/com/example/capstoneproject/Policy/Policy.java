@@ -1,5 +1,6 @@
 package com.example.capstoneproject.Policy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import com.example.capstoneproject.Users.Customer;
 
@@ -23,6 +24,7 @@ public class Policy {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
+    @JsonIgnore
     private Customer customer;
 
     private int quoteId; // Foreign key representing the associated Quote
@@ -152,8 +154,9 @@ public class Policy {
         this.quoteId = quoteId;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    @Transient
+    public Integer getCustomerId() {
+        return customer != null ? customer.getId() : null;
     }
 
     public void setCustomer(Customer customer) {
