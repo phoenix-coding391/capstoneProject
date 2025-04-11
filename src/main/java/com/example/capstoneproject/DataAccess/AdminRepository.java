@@ -9,7 +9,7 @@ public interface AdminRepository extends JpaRepository<Admin, Integer> {
     @Transactional
     default Admin saveWithUser(Admin admin, UserRepository userRepository) {
         User user = new User();
-        user.setRole("Admin");
+        user.setRole("admin");
         User savedUser = userRepository.save(user);
 
         admin.setUser(savedUser);

@@ -9,7 +9,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Transactional
     default Customer saveWithUser(Customer customer, UserRepository userRepository) {
         User user = new User();
-        user.setRole("Customer");
+        user.setRole("customer");
         User savedUser = userRepository.save(user);
 
         customer.setUser(savedUser);

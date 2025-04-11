@@ -9,7 +9,7 @@ public interface AgentRepository extends JpaRepository<Agent, Integer> {
     @Transactional
     default Agent saveWithUser(Agent agent, UserRepository userRepository) {
         User user = new User();
-        user.setRole("Agent");
+        user.setRole("agent");
         User savedUser = userRepository.save(user);
 
         agent.setUser(savedUser);
