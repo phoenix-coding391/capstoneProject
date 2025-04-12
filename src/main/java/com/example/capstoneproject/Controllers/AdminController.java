@@ -1,5 +1,6 @@
 package com.example.capstoneproject.Controllers;
 
+import com.example.capstoneproject.Users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.capstoneproject.DataAccess.AdminRepository;
@@ -45,6 +46,8 @@ public class AdminController {
 
     @DeleteMapping(ID)
     public void deleteAdmin(@PathVariable int id) {
+        User user = userRepository.findById(getAdminById(id).getUser().getId()).orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + id));
         adminRepository.deleteById(id);
+        userRepository.delete(user);
     }
 }

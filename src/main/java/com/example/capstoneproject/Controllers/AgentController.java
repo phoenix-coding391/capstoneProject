@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.capstoneproject.DataAccess.AgentRepository;
 import com.example.capstoneproject.DataAccess.UserRepository;
 import com.example.capstoneproject.Users.Agent;
+import com.example.capstoneproject.Users.User;
 
 import java.util.List;
 
@@ -45,6 +46,8 @@ public class AgentController {
 
     @DeleteMapping(ID)
     public void deleteAgent(@PathVariable int id) {
+        User user = userRepository.findById(getAgentById(id).getUser().getId()).orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + id));
         agentRepository.deleteById(id);
+        userRepository.delete(user);
     }
 }

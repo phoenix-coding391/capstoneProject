@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.capstoneproject.DataAccess.CustomerRepository;
 import com.example.capstoneproject.DataAccess.UserRepository;
 import com.example.capstoneproject.Users.Customer;
+import com.example.capstoneproject.Users.User;
 
 import java.util.List;
 
@@ -45,6 +46,8 @@ public class CustomerController {
 
     @DeleteMapping(ID)
     public void deleteCustomer(@PathVariable int id) {
+        User user = userRepository.findById(getCustomerById(id).getUser().getId()).orElseThrow(() -> new IllegalArgumentException("Customer not found with ID: " + id));
         customerRepository.deleteById(id);
+        userRepository.delete(user);
     }
 }
