@@ -39,6 +39,7 @@ public class CustomerController {
         Customer existingCustomer = customerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Customer not found with ID: " + id));
         existingCustomer.setName(updatedCustomer.getName());
         existingCustomer.setEmail(updatedCustomer.getEmail());
+        existingCustomer.setPassword(updatedCustomer.getPassword());
         return customerRepository.save(existingCustomer);
     }
 

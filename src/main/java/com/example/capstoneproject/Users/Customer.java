@@ -18,6 +18,9 @@ public class Customer {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(unique = true, nullable = false)
+    private String password;
+
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false) // Links to User table
     private User user;
@@ -30,11 +33,12 @@ public class Customer {
 
     public Customer() {}
 
-    public Customer(int id, String name, String email, User user) {
+    public Customer(int id, String name, String email, User user, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.user = user;
+        this.password = password;
     }
 
     // Getters and setters
@@ -60,6 +64,14 @@ public class Customer {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public User getUser() {
@@ -88,7 +100,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer [ID=" + id + ", Name=" + name + ", Email=" + email + ", User=" + user + "]";
+        return "Customer [ID=" + id + ", Name=" + name + ", Email=" + email + ", Password= " + password + ", User=" + user + "]";
     }
 }
 
