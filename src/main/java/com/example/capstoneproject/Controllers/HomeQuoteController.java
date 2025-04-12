@@ -96,4 +96,14 @@ public class HomeQuoteController {
 
         return homeQuoteRepository.save(existingQuote);
     }
+
+    @PutMapping("/{id}/paid")
+    public HomeQuote updateHomeQuotePaidStatus(@PathVariable int id, @RequestParam boolean paid) {
+        HomeQuote quote = homeQuoteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("HomeQuote not found with ID: " + id));
+
+        quote.setPaid(paid);
+        return homeQuoteRepository.save(quote);
+    }
+
 }

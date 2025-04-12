@@ -98,6 +98,16 @@ public class AutoQuoteController {
         return autoQuoteRepository.save(existingQuote);
     }
 
+    @PutMapping("/{id}/paid")
+    public AutoQuote updateAutoQuotePaidStatus(@PathVariable int id, @RequestParam boolean paid) {
+        AutoQuote quote = autoQuoteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("AutoQuote not found with ID: " + id));
+
+        quote.setPaid(paid);
+        return autoQuoteRepository.save(quote);
+    }
+
+
 
 
 
