@@ -1,5 +1,7 @@
 package com.example.capstoneproject.Requests;
 
+import java.time.LocalDate;
+
 public class AutoQuoteRequest {
     private int vehicleId;
     private int driverAge;
@@ -7,6 +9,8 @@ public class AutoQuoteRequest {
     private double baseRate;
     private double discountFactor;
     private int customerId;
+    private boolean paid;
+    private LocalDate expiryDate;
 
     // Getters and setters
     public int getVehicleId() {
@@ -55,5 +59,21 @@ public class AutoQuoteRequest {
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    public LocalDate getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(LocalDate expiryDate) {
+        this.expiryDate = expiryDate;
     }
 }

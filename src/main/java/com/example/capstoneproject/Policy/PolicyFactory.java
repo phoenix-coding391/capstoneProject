@@ -7,6 +7,16 @@ public class PolicyFactory {
     public static Policy createPolicy(Customer customer, Quote quote) {
         String policyType = quote.getQuoteType();
 
+        // Validate that quote is paid
+        if (!quote.isPaid()) {
+            throw new IllegalArgumentException("Quote is not paid");
+        }
+
+        // Validate that quote is not expired
+        if (quote.isExpired()) {
+            throw new IllegalArgumentException("Quote is expired");
+        }
+
         // Validate home policy restriction
         if (policyType.equals("Home")) {
             long activeHomePolicies = customer.getPolicies().stream()

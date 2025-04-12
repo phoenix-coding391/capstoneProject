@@ -24,7 +24,7 @@ public class AutoQuote extends Quote {
     }
 
     // Existing internal risk factor calculation (without discount)
-    private static double calculatePremium(double baseRate, int driverAge, int accidentCount, Vehicle vehicle) {
+    public static double calculatePremium(double baseRate, int driverAge, int accidentCount, Vehicle vehicle) {
         double driverFactor = driverAge < 25 ? 2.0 : 1.0;
         double accidentFactor = accidentCount > 2 ? 2.5 : (accidentCount == 1 ? 1.25 : 1.0);
         double vehicleFactor = vehicle.getYear() < LocalDate.now().getYear() - 10 ? 2.0 :

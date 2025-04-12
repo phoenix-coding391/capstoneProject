@@ -41,6 +41,7 @@ public class AutoQuoteController {
         Vehicle vehicle = vehicleRepository.findById(request.getVehicleId())
                 .orElseThrow(() -> new IllegalArgumentException("Vehicle not found"));
 
+        // Use the QuoteFactory to create an AutoQuote, with premium calculated internally
         AutoQuote autoQuote = QuoteFactory.createAutoQuote(
                 customer,
                 vehicle,
@@ -57,4 +58,47 @@ public class AutoQuoteController {
         return autoQuoteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("AutoQuote not found"));
     }
+
+    @PutMapping("/{id}")
+    public AutoQuote updateAutoQuote(@PathVariable int id, @RequestBody AutoQuoteRequest request) {
+        AutoQuote existingQuote = autoQuoteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("AutoQuote not found with ID: " + id));
+
+        if (request.getCustomerId() != 0) {
+            Customer customer = customerRepository.findById(request.getCustomerId())
+                    .orElseThrow(() -> new IllegalArgumentException("Customer not found with ID: " + request.getCustomerId()));
+            existingQuote.setCustomer(customer);
+        }
+
+        if (request.getVehicleId() != 0) {
+            Vehicle vehicle = vehicleRepository.findById(request.getVehicleId())
+                    .orElseThrow(() -> new IllegalArgumentException("Vehicle not found with ID: " + request.getVehicleId()));
+            existingQuote.setVehicle(vehicle);
+        }
+
+        // Update basic fields
+        existingQuote.setDriverAge(request.getDriverAge());
+        existingQuote.setAccidentCount(request.getAccidentCount());
+
+        // Always fetch customer and vehicle to recalculate premium correctly
+        Customer customer = customerRepository.findById(request.getCustomerId())
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found with ID: " + request.getCustomerId()));
+
+        Vehicle vehicle = vehicleRepository.findById(request.getVehicleId())
+                .orElseThrow(() -> new IllegalArgumentException("Vehicle not found with ID: " + request.getVehicleId()));
+
+        // Recalculate premium using the factory logic (discount included)
+        AutoQuote tempQuote = QuoteFactory.createAutoQuote(customer, vehicle, request.getDriverAge(), request.getAccidentCount(), request.getBaseRate());
+        existingQuote.setQuotePrice(tempQuote.getQuotePrice());
+
+        // Optional fields
+        existingQuote.setPaid(request.isPaid());
+        existingQuote.setExpiryDate(request.getExpiryDate());
+
+        return autoQuoteRepository.save(existingQuote);
+    }
+
+
+
+
 }

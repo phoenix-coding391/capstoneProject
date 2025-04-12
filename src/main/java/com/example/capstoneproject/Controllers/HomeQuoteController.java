@@ -35,8 +35,9 @@ public class HomeQuoteController {
 
     @PostMapping
     public HomeQuote createHomeQuote(@RequestBody HomeQuoteRequest request) {
-        // Print the HomeQuote object to validate the object
+        // Print the HomeQuoteRequest object to validate the input
         System.out.println(request.toString());
+
         // Validate that customerId is not the default value (0)
         if (request.getCustomerId() == 0) {
             throw new IllegalArgumentException("Customer ID is required.");
@@ -54,17 +55,45 @@ public class HomeQuoteController {
         Home home = homeRepository.findById(request.getHomeId())
                 .orElseThrow(() -> new IllegalArgumentException("Home not found with ID: " + request.getHomeId()));
 
-        // Create the HomeQuote using the QuoteFactory
+        // Create the HomeQuote using the QuoteFactory (riskFactor is now calculated in the factory method)
         HomeQuote homeQuote = QuoteFactory.createHomeQuote(customer, home, request.getBaseRate());
 
-        // Save the homeQuote using saveWithQuote method
+        // Save the HomeQuote using the custom saveWithQuote method
         return homeQuoteRepository.saveWithQuote(homeQuote, customer);
     }
-
 
     @GetMapping("/{id}")
     public HomeQuote getHomeQuoteById(@PathVariable int id) {
         return homeQuoteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("HomeQuote not found"));
+    }
+
+    @PutMapping("/{id}")
+    public HomeQuote updateHomeQuote(@PathVariable int id, @RequestBody HomeQuoteRequest request) {
+        HomeQuote existingQuote = homeQuoteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("HomeQuote not found with ID: " + id));
+
+        // Optional: Validate updated customer and home
+        if (request.getCustomerId() != 0) {
+            Customer customer = customerRepository.findById(request.getCustomerId())
+                    .orElseThrow(() -> new IllegalArgumentException("Customer not found with ID: " + request.getCustomerId()));
+            existingQuote.setCustomer(customer);
+        }
+
+        if (request.getHomeId() != 0) {
+            Home home = homeRepository.findById(request.getHomeId())
+                    .orElseThrow(() -> new IllegalArgumentException("Home not found with ID: " + request.getHomeId()));
+            existingQuote.setHome(home);
+        }
+
+        // Update quote values (the riskFactor is now calculated inside the QuoteFactory)
+        existingQuote.setBaseRate(request.getBaseRate());
+
+        // You don't need to set the riskFactor here as it will be recalculated in the factory
+        existingQuote.setQuotePrice(HomeQuote.calculatePremium(request.getBaseRate(), existingQuote.getRiskFactor()));
+        existingQuote.setPaid(request.isPaid());
+        existingQuote.setExpiryDate(request.getExpiryDate());
+
+        return homeQuoteRepository.save(existingQuote);
     }
 }
