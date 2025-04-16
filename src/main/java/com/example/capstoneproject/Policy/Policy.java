@@ -6,6 +6,9 @@ import com.example.capstoneproject.Users.Customer;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a Policy entity that defines insurance policy details.
+ */
 @Entity
 public class Policy {
     @Id
@@ -17,7 +20,6 @@ public class Policy {
     private LocalDate endDate;
     private String status; // "Active", "Cancelled", "Renewed"
     private boolean isPaid;
-
     private double basePremium;
     private double taxRate; // 15% HST
     private double totalPremium;
@@ -29,11 +31,23 @@ public class Policy {
 
     private int quoteId; // Foreign key representing the associated Quote
 
+    /**
+     * Default constructor for Policy.
+     */
     public Policy() {}
 
+    /**
+     * Constructs a new Policy instance with specified details.
+     *
+     * @param policyNumber The unique policy number.
+     * @param quoteId      The associated Quote ID.
+     * @param policyType   The type of policy (e.g., Auto, Home).
+     * @param basePremium  The base premium amount.
+     * @param taxRate      The applicable tax rate.
+     */
     public Policy(String policyNumber, int quoteId, String policyType, double basePremium, double taxRate) {
         this.policyNumber = policyNumber;
-        this.quoteId = quoteId; // associating with a Quote
+        this.quoteId = quoteId;
         this.policyType = policyType;
         this.startDate = LocalDate.now();
         this.endDate = startDate.plusYears(1); // Policies are 1 year long
@@ -44,20 +58,32 @@ public class Policy {
         calculateTotalPremium();
     }
 
+    /**
+     * Calculates the total premium based on the base premium and tax rate.
+     */
     private void calculateTotalPremium() {
-        // Rounds the result to the nearest whole number; result is cast back to double.
         this.totalPremium = (double) Math.round(basePremium * (1 + taxRate));
     }
 
+    /**
+     * Renews the policy by extending its end date and updating its status.
+     *
+     * @throws IllegalStateException if the policy is not active.
+     */
     public void renewPolicy() {
         if (!status.equals("Active")) {
             throw new IllegalStateException("Only active policies can be renewed.");
         }
         this.endDate = endDate.plusYears(1);
-        this.status = "Renewed"; // Update status to indicate renewal
+        this.status = "Renewed";
         System.out.println("Policy " + policyNumber + " renewed. New end date: " + endDate);
     }
 
+    /**
+     * Cancels the policy by changing its status.
+     *
+     * @throws IllegalStateException if the policy is not active.
+     */
     public void cancelPolicy() {
         if (!status.equals("Active")) {
             throw new IllegalStateException("Only active policies can be canceled.");
@@ -66,7 +92,7 @@ public class Policy {
         System.out.println("Policy " + policyNumber + " has been canceled.");
     }
 
-    // Getters and setters for all fields, including quoteId
+    // Getters and setters
 
     public int getId() {
         return id;
@@ -163,6 +189,11 @@ public class Policy {
         this.customer = customer;
     }
 
+    /**
+     * Generates a string representation of the policy object.
+     *
+     * @return A formatted string describing the policy.
+     */
     @Override
     public String toString() {
         return "Policy {" +

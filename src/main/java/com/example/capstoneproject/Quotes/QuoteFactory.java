@@ -4,9 +4,20 @@ import com.example.capstoneproject.Objects.Home;
 import com.example.capstoneproject.Objects.Vehicle;
 import com.example.capstoneproject.Users.Customer;
 
+/**
+ * Factory class for creating insurance quotes based on customer details.
+ */
 public class QuoteFactory {
 
-    // Method to create a HomeQuote remains largely the same
+    /**
+     * Creates a HomeQuote instance based on the customer's home details.
+     * Calculates risk factors influencing the final quote price.
+     *
+     * @param customer The customer applying for the home quote.
+     * @param home The home associated with the quote.
+     * @param baseRate The base rate used to calculate the quote price.
+     * @return The generated HomeQuote object.
+     */
     public static HomeQuote createHomeQuote(Customer customer, Home home, double baseRate) {
         double homeValueFactor = (home.getHomeValue() > 250000) ? 1 + (home.getHomeValue() - 250000) * 0.002 : 1.0;
         double liabilityFactor = home.getLiabilityLimit() == 2_000_000 ? 1.25 : 1.0;
@@ -23,7 +34,17 @@ public class QuoteFactory {
         return new HomeQuote(customer.getQuotes().size() + 1, home, baseRate, riskFactor);
     }
 
-    // Updated method to create an AutoQuote
+    /**
+     * Creates an AutoQuote instance based on the customer's vehicle details.
+     * Applies discount factors if applicable.
+     *
+     * @param customer The customer applying for the auto quote.
+     * @param vehicle The vehicle associated with the quote.
+     * @param driverAge The age of the driver.
+     * @param accidentCount The number of accidents the driver has had.
+     * @param baseRate The base rate used to calculate the quote price.
+     * @return The generated AutoQuote object.
+     */
     public static AutoQuote createAutoQuote(Customer customer, Vehicle vehicle, int driverAge, int accidentCount, double baseRate) {
         // Compute discount factor based on whether the customer has an active Home policy.
         double discountFactor = customer.getPolicies().stream()

@@ -9,12 +9,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
+/**
+ * Implementation of the custom repository for managing AutoQuote-related operations.
+ */
 @Repository
 public class AutoQuoteRepositoryCustomImpl implements AutoQuoteRepositoryCustom {
 
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * Saves an AutoQuote entity along with the associated Customer entity.
+     *
+     * @param autoQuote The AutoQuote to be saved.
+     * @param customer The Customer associated with the quote.
+     * @return The saved AutoQuote object.
+     */
     @Override
     @Transactional
     public AutoQuote saveWithQuote(AutoQuote autoQuote, Customer customer) {

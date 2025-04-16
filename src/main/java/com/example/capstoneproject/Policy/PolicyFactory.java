@@ -3,7 +3,21 @@ package com.example.capstoneproject.Policy;
 import com.example.capstoneproject.Users.Customer;
 import com.example.capstoneproject.Quotes.Quote;
 
+/**
+ * Factory class for creating Policy instances based on validated Quote and Customer details.
+ */
 public class PolicyFactory {
+
+    /**
+     * Creates a new Policy instance based on the provided Customer and Quote.
+     * Ensures that policies follow necessary restrictions.
+     *
+     * @param customer The customer associated with the policy.
+     * @param quote The quote used to generate the policy.
+     * @return The created Policy object.
+     * @throws IllegalArgumentException if the quote is unpaid or expired.
+     * @throws IllegalStateException if the customer already has maximum allowed active policies.
+     */
     public static Policy createPolicy(Customer customer, Quote quote) {
         String policyType = quote.getQuoteType();
 

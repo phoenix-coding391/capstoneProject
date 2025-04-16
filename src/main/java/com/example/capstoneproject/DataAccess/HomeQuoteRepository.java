@@ -3,8 +3,13 @@ package com.example.capstoneproject.DataAccess;
 import com.example.capstoneproject.Quotes.HomeQuote;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-// Extend the custom interface here
+/**
+ * Repository interface for managing HomeQuote entities.
+ * <p>
+ * Extends JpaRepository to provide built-in CRUD operations.
+ * Also extends HomeQuoteRepositoryCustom to add custom database operations.
+ */
 public interface HomeQuoteRepository extends JpaRepository<HomeQuote, Integer>, HomeQuoteRepositoryCustom {
-    // JpaRepository gives you save(), findById(), etc.
-    // HomeQuoteRepositoryCustom gives you saveWithQuote()
+    // JpaRepository provides basic operations such as save(), findById(), etc.
+    // HomeQuoteRepositoryCustom provides custom operations like saveWithQuote()
 }
